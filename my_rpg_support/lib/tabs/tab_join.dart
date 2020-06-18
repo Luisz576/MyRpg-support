@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:my_rpg_support/data/colors_app.dart';
 
 class TabJoin extends StatefulWidget {
@@ -10,6 +11,15 @@ class _TabJoinState extends State<TabJoin> {
 
   TextEditingController _codeController = TextEditingController();
   bool _codeNotOk = false;
+
+  @override
+  void initState(){
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
 
   @override
   Widget build(BuildContext context) {

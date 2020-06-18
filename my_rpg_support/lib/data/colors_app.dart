@@ -16,10 +16,40 @@ class ColorsApp{
   static const Color pointOkColor = Colors.yellow;
   static const Color pointBadColor = Colors.red;
 
-  static Widget buildDrawer({Color from, Color to, Alignment begin, Alignment end}) => Container(
+  static BoxDecoration buildDrawerBox({Color from, Color medio, Color medioDown, Color to, Alignment begin, Alignment end}){
+    return BoxDecoration(
+      gradient: LinearGradient(
+        colors: medio != null ? medioDown != null ?
+        [
+          from,
+          medio,
+          medioDown,
+          to,
+        ] :
+        [
+          from,
+          medio,
+          to,
+        ] :
+        [
+          from,
+          to,
+        ],
+        begin: begin,
+        end: end,
+      ),
+    );
+  }
+
+  static Widget buildDrawer({Color from, Color medio, Color to, Alignment begin, Alignment end}) => Container(
     decoration: BoxDecoration(
       gradient: LinearGradient(
-        colors: [
+        colors: medio != null ? [
+          from,
+          medio,
+          to,
+        ] :
+        [
           from,
           to,
         ],

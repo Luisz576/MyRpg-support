@@ -23,17 +23,18 @@ class FloatButtomDados extends StatelessWidget {
       context: context,
       builder: (context){
         return AlertDialog(
+          backgroundColor: ColorsApp.terciaryColor,
           title: Text(
             "Você tirou:",
             style: TextStyle(
-              color: Colors.black,
+              color: ColorsApp.primaryWhiteColor,
               fontSize: 8.0
             ),
           ),
          content: Text(
             "$_result",
             style: TextStyle(
-              color: Colors.black,
+              color: ColorsApp.primaryWhiteColor,
               fontSize: 48.0,
             ),
             textAlign: TextAlign.center,

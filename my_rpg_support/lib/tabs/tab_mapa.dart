@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:my_rpg_support/data/colors_app.dart';
 
 class TabMapa extends StatefulWidget {
@@ -11,6 +12,18 @@ class TabMapa extends StatefulWidget {
 class _TabMapaState extends State<TabMapa> {
   final String _codeg;
   _TabMapaState(this._codeg);
+
+  @override
+  void initState(){
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(

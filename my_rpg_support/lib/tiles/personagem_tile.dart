@@ -72,15 +72,68 @@ class _PersonagemTileState extends State<PersonagemTile> {
                   ),
                   SizedBox(width: 16.0,),
                   //Info status
-                  _createColumn3Text(color1: lifeColor, color2: mpColor, color3: ColorsApp.primaryWhiteColor, t1: "HP: ${_player.hpatual} / ${_player.maxhp}", t2: "MP: ${_player.mpatual} / ${_player.maxmp}", t3: "Lv: ${_player.lvl}"),
-                  _createColumn3Text(color1: lifeColor, color2: mpColor, color3: ColorsApp.primaryWhiteColor, t1: "HP: ${_player.at}", t2: "MP: ${_player.def}", t3: "${_player.vel}"),
+                  SizedBox(
+                    width: 85.0,
+                    child: _createColumn3Text(color1: lifeColor,
+                      color2: mpColor,
+                      color3: ColorsApp.primaryWhiteColor,
+                      t1: "Hp: ${_player.hpatual} / ${_player.maxhp}",
+                      t2: "Mp: ${_player.mpatual} / ${_player.maxmp}",
+                      t3: "Lv: ${_player.lvl}"
+                    ),
+                  ),
+                  SizedBox(width: 16.0,),
+                  SizedBox(
+                    width: 55.0,
+                    child: _createColumn3Text(color1: ColorsApp.primaryWhiteColor,
+                      color2: ColorsApp.primaryWhiteColor,
+                      color3: ColorsApp.primaryWhiteColor,
+                      t1: "At: ${_player.at}",
+                      t2: "Def: ${_player.def}",
+                      t3: "Vel: ${_player.vel}"
+                    ),
+                  ),
+                  SizedBox(width: 16.0,),
+                  SizedBox(
+                    width: 60.0,
+                    child: _createColumn2TextSkills(color1: ColorsApp.primaryWhiteColor,
+                      color2: ColorsApp.primaryWhiteColor,
+                      t1: "Sort: ${_player.sort}",
+                      t2: "Xp: ${_player.xp}%",
+                      skills: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(
+                            width: 28.0,
+                            child: Image.network(Jogador.getSkillImage(_player.skills[0]) != null ? Jogador.getSkillImage(_player.skills[0]) : Jogador.getSkillImageNull(), fit: BoxFit.fill,),
+                          ),
+                          SizedBox(
+                            width: 4.0,
+                          ),
+                          SizedBox(
+                            width: 28.0,
+                            child: Image.network(Jogador.getSkillImage(_player.skills[1]) != null ? Jogador.getSkillImage(_player.skills[1]) : Jogador.getSkillImageNull(), fit: BoxFit.fill,),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
+              ),
+              //Inventory
+              _previewInventoryPlayer(),
+              //XP
+              Expanded(
+                child: Align(
+                  child: LinearProgressIndicator(
+                    value: (_player.xp / 100),
+                  ),
+                  alignment: Alignment.bottomCenter,
+                ),
               ),
             ],
           ),
-          decoration: BoxDecoration(
-            color: ColorsApp.terciaryColor,
-          ),
+          decoration: ColorsApp.buildDrawerBox(begin: Alignment.topCenter, end: Alignment.bottomCenter, from: ColorsApp.terciaryColor, medio: ColorsApp.terciaryColor, medioDown: ColorsApp.terciaryColor, to: lifeColor),
         ),
       ),
     ),
@@ -90,31 +143,77 @@ class _PersonagemTileState extends State<PersonagemTile> {
   Widget _createColumn3Text({Color color1, Color color2, Color color3, String t1, String t2, String t3}){
     return Column(
       children: <Widget>[
-        Text(
-          t1,
-          style: TextStyle(
-            fontSize: 14.0,
-            color: color1,
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            t1,
+            style: TextStyle(
+              fontSize: 14.0,
+              color: color1,
+            ),
           ),
         ),
         SizedBox(height: 14.0,),
-        Text(
-          t2,
-          style: TextStyle(
-            fontSize: 14.0,
-            color: color2,
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            t2,
+            style: TextStyle(
+              fontSize: 14.0,
+              color: color2,
+            ),
           ),
         ),
         SizedBox(height: 14.0,),
-        Text(
-          t3,
-          style: TextStyle(
-            fontSize: 14.0,
-            color: color3,
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            t3,
+            style: TextStyle(
+              fontSize: 14.0,
+              color: color3,
+            ),
           ),
         ),
       ],
     );
+  }
+
+  Widget _createColumn2TextSkills({Color color1, Color color2, String t1, String t2, Row skills}){
+    return Column(
+      children: <Widget>[
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            t1,
+            style: TextStyle(
+              fontSize: 14.0,
+              color: color1,
+            ),
+          ),
+        ),
+        SizedBox(height: 14.0,),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            t2,
+            style: TextStyle(
+              fontSize: 14.0,
+              color: color2,
+            ),
+          ),
+        ),
+        SizedBox(height: 14.0,),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: skills,
+        ),
+      ],
+    );
+  }
+
+  Widget _previewInventoryPlayer(){
+    return Container();
   }
 
 }
