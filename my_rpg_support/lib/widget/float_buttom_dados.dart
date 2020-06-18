@@ -1,15 +1,17 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:my_rpg_support/data/colors_app.dart';
 
 class FloatButtomDados extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
+      backgroundColor: ColorsApp.secundaryColor,
       onPressed: (){
         _bottomOpem(context);
       },
-      child: Icon(Icons.assignment, color: Colors.white,),
+      child: Icon(Icons.assignment, color: ColorsApp.primaryWhiteColor,),
     );
   }
 
@@ -46,25 +48,41 @@ class FloatButtomDados extends StatelessWidget {
       context: context,
       builder: (BuildContext bc){
         return Container(
+          color: ColorsApp.terciaryColor,
           child: Wrap(
             children: <Widget>[
               ListTile(
-                leading: Icon(Icons.data_usage),
-                title: Text('6 lados'),
+                leading: Icon(Icons.data_usage, color: ColorsApp.primaryWhiteColor,),
+                title: Text(
+                  '6 lados',
+                  style: TextStyle(
+                    color: ColorsApp.primaryWhiteColor,
+                  ),
+                ),
                 onTap: () {
                   _jogarDado(6, context);
                 }          
               ),
               ListTile(
-                leading: Icon(Icons.data_usage),
-                title: Text('12 lados'),
+                leading: Icon(Icons.data_usage, color: ColorsApp.primaryWhiteColor,),
+                title: Text(
+                  '12 lados',
+                  style: TextStyle(
+                    color: ColorsApp.primaryWhiteColor,
+                  ),
+                ),
                 onTap: () {
                   _jogarDado(12, context);
                 },          
               ),
               ListTile(
-                leading: Icon(Icons.data_usage),
-                title: Text('100 lados'),
+                leading: Icon(Icons.data_usage, color: ColorsApp.primaryWhiteColor,),
+                title: Text(
+                  '100 lados',
+                  style: TextStyle(
+                    color: ColorsApp.primaryWhiteColor,
+                  ),
+                ),
                 onTap: () {
                   _jogarDado(100, context);
                 },

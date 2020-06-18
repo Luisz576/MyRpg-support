@@ -60,15 +60,26 @@ class _GameState extends State<Game> {
       ),
       body: tabs[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: ColorsApp.primaryColor,
         elevation: 2.0,
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            title: Text('Equipe'),
+            icon: Icon(Icons.people, color: _selectedIndex == 0 ? ColorsApp.secundaryColor : ColorsApp.primaryWhiteColor,),
+            title: Text(
+              'Equipe',
+              style: TextStyle(
+                color: _selectedIndex == 0 ? ColorsApp.secundaryColor : ColorsApp.primaryWhiteColor,
+              ),
+            ),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.map),
-            title: Text('Mapa'),
+            icon: Icon(Icons.map, color: _selectedIndex == 1 ? ColorsApp.secundaryColor : ColorsApp.primaryWhiteColor,),
+            title: Text(
+              'Mapa',
+              style: TextStyle(
+                color: _selectedIndex == 1 ? ColorsApp.secundaryColor : ColorsApp.primaryWhiteColor,
+              ),
+            ),
           ),
         ],
         currentIndex: _selectedIndex,

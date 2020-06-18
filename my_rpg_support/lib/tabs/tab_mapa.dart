@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_rpg_support/data/colors_app.dart';
 
 class TabMapa extends StatefulWidget {
   final String _codeg;
@@ -13,6 +14,7 @@ class _TabMapaState extends State<TabMapa> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: ColorsApp.primaryColor,
       child: ListView(
         children: <Widget>[
           Column(
@@ -40,6 +42,7 @@ class _TabMapaState extends State<TabMapa> {
                       "Mapa criado por Luisz576",
                       style: TextStyle(
                         fontSize: 12.0,
+                        color: ColorsApp.primaryWhiteColor,
                       ),
                     ),
                   ],
@@ -57,6 +60,7 @@ class _TabMapaState extends State<TabMapa> {
                         style: TextStyle(
                           fontSize: 14.0,
                           fontWeight: FontWeight.bold,
+                          color: ColorsApp.primaryWhiteColor,
                         ),
                       ),
                       SizedBox(width: 10.0,),
@@ -65,6 +69,7 @@ class _TabMapaState extends State<TabMapa> {
                         style: TextStyle(
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold,
+                          color: ColorsApp.primaryWhiteColor,
                         ),
                       ),
                     ],

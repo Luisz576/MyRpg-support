@@ -1,6 +1,6 @@
 class Jogador{
 
-  String nome, raca, classe;
+  String nome, raca, classe, image;
   int lvl, maxhp, maxmp, at, def, vel, sort, hpatual, mpatual;
 
   Jogador.fromMap(Map map){
@@ -16,6 +16,7 @@ class Jogador{
     sort = map['sort'];
     hpatual = map['hpatual'];
     mpatual = map['mpatual'];
+    image = map['image'];
   }
 
   Map toMap(){
@@ -32,6 +33,7 @@ class Jogador{
       'sort': sort,
       'hpatual': hpatual,
       'mpatual': mpatual,
+      'image': image,
     };
   }
 
