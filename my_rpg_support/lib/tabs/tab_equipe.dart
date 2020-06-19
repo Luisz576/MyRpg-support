@@ -26,38 +26,108 @@ class _TabEquipeState extends State<TabEquipe> {
 
   //Personagens test e test2
   Map test = {
-      'nome': "Luisz576",
-      'raca': "Elfo",
-      'classe': "Mago",
-      'lvl': 20,
-      'maxhp': 100,
-      'maxmp': 70,
-      'xp': 97,
-      'at': 12,
-      'def': 9,
-      'vel': 7,
-      'sort': 10,
-      'hpatual': 32,
-      'mpatual': 6,
-      'image': "https://yt3.ggpht.com/a/AATXAJzYiUqinCnhv1WhdG8Tvb3H3dOJW4n5B1hhmQ=s48-c-k-c0xffffffff-no-rj-mo",
-      'skills': [0, 1],
-    };
-  Map test2 = {
-      'nome': "Luisz576 2",
-      'raca': "Elfo",
-      'classe': "Mago",
-      'lvl': 18,
-      'maxhp': 89,
-      'maxmp': 34,
-      'xp': 56,
-      'at': 12,
-      'def': 9,
-      'vel': 7,
-      'sort': 7,
-      'hpatual': 18,
-      'mpatual': 14,
-      'image': "https://yt3.ggpht.com/a/AATXAJzYiUqinCnhv1WhdG8Tvb3H3dOJW4n5B1hhmQ=s48-c-k-c0xffffffff-no-rj-mo",
-      'skills': [0, 1],
+        "nome": "Luisz576",
+        "raca": "Elfo",
+        "classe": "Mago",
+        "lvl": 1,
+        "maxhp": 6,
+        "maxmp": 6,
+        "xp": 0,
+        "at": 2,
+        "def": 3,
+        "vel": 4,
+        "sort": 2,
+        "influencia": 1,
+        "hpatual": 6,
+        "mpatual":6,
+        "image": "https://yt3.ggpht.com/a/AATXAJzYiUqinCnhv1WhdG8Tvb3H3dOJW4n5B1hhmQ=s48-c-k-c0xffffffff-no-rj-mo",
+        "skills": [1, 0],
+        "inventory": {
+            "0": {
+              "id": 1,
+              "quantidade": 10
+            },
+            "1": {
+              "id": 0,
+              "quantidade": 0
+            },
+            "2": {
+              "id": 0,
+              "quantidade": 0
+            },
+            "3": {
+              "id": 0,
+              "quantidade": 0
+            },
+            "4": {
+              "id": 0,
+              "quantidade": 0
+            },
+            "5": {
+              "id": 0,
+              "quantidade": 0
+            },
+            "6": {
+              "id": 0,
+              "quantidade": 0
+            },
+            "7": {
+              "id": 0,
+              "quantidade": 0
+            },
+            "8": {
+              "id": 0,
+              "quantidade": 0
+            },
+            "9": {
+              "id": 0,
+              "quantidade": 0
+            },
+            "10": {
+              "id": 0,
+              "quantidade": 0
+            },
+            "11": {
+              "id": 0,
+              "quantidade": 0
+            },
+            "12": {
+              "id": 0,
+              "quantidade": 0
+            },
+            "13": {
+              "id": 0,
+              "quantidade": 0
+            },
+            "14": {
+              "id": 0,
+              "quantidade": 0
+            },
+            "15": {
+              "id": 0,
+              "quantidade": 0
+            },
+            "16": {
+              "id": 0,
+              "quantidade": 0
+            },
+            "17": {
+              "id": 0,
+              "quantidade": 0
+            },
+            "18": {
+              "id": 0,
+              "quantidade": 0
+            },
+            "19": {
+              "id": 0,
+              "quantidade": 0
+            },
+            "20": {
+              "id": 0,
+              "quantidade": 0
+            }
+        }
     };
 
   @override
@@ -75,7 +145,6 @@ class _TabEquipeState extends State<TabEquipe> {
               child: ListView(
                 children: <Widget>[
                   PersonagemTile(Jogador.fromMap(test)),
-                  PersonagemTile(Jogador.fromMap(test2)),
                 ],
               ),
             ),

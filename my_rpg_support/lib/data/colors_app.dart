@@ -15,6 +15,7 @@ class ColorsApp{
   static const Color pointGoodColor = Colors.green;
   static const Color pointOkColor = Colors.yellow;
   static const Color pointBadColor = Colors.red;
+  static const Color playerDie = Colors.grey;
 
   static BoxDecoration buildDrawerBox({Color from, Color medio, Color medioDown, Color to, Alignment begin, Alignment end}){
     return BoxDecoration(
