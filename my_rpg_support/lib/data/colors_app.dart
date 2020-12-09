@@ -7,10 +7,13 @@ class ColorsApp{
   static const Color primaryColor = Color.fromRGBO(12,13,26,20);
   static const Color secundaryColor = Color.fromRGBO(0,121,107,20);
   static const Color terciaryColor = Color.fromRGBO(8,8,16,50);
+  static const Color secundaryTerciaryColor = Color.fromRGBO(8,8,16,250);
 
   static const Color primaryWhiteColor = Color.fromRGBO(250,250,250,50);
+  static const Color secundaryWhiteColor = Color.fromRGBO(150,150,150,50);
 
   static const Color errorColor = Color.fromRGBO(255,5,15,50);
+  static const Color missionFinished = Color.fromARGB(80,0,0,0);
 
   static const Color pointGoodColor = Colors.green;
   static const Color pointOkColor = Colors.yellow;

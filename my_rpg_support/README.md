@@ -1,4 +1,4 @@
-# my_rpg_support
+# my_rpg
 
 A new Flutter project.
 

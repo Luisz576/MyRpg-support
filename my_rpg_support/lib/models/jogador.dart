@@ -1,11 +1,11 @@
-import 'package:my_rpg_support/data/data_item.dart';
-import 'package:my_rpg_support/models/item.dart';
+import 'package:my_rpg/data/data_item.dart';
+import 'package:my_rpg/models/item.dart';
 
 class Jogador{
 
   String nome, raca, classe, image;
-  int lvl, maxhp, maxmp, at, def, vel, sort, influencia, hpatual, mpatual, xp;
-  List<int> skills;
+  int lvl, gold, maxhp, maxmp, at, def, vel, sort, influencia, hpatual, mpatual, xp;
+  List<dynamic> skills;
   Map inventory;
 
   Item getItem(int index){
@@ -19,6 +19,7 @@ class Jogador{
     raca = map['raca'];
     classe = map['classe'];
     lvl = map['lvl'];
+    gold = map['gold'];
     maxhp = map['maxhp'];
     maxmp = map['maxmp'];
     xp = map['xp'];
@@ -40,6 +41,7 @@ class Jogador{
       'raca': raca,
       'classe': classe,
       'lvl': lvl,
+      'gold': gold,
       'maxhp': maxhp,
       'maxmp': maxmp,
       'xp': xp,
@@ -58,16 +60,6 @@ class Jogador{
 
   static String getSkillImageNull(){
     return getSkillImage(0);
-  }
-  static String getSkillNameNull(){
-    return getSkillName(0);
-  }
-  static String getSkillName(int id){
-    Map skills = {
-      "0":"",
-      "1":"Skill name",
-    };
-    return skills['$id'];
   }
   static String getSkillImage(int id){
     Map skills = {

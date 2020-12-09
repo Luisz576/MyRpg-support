@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:my_rpg_support/data/colors_app.dart';
-import 'package:my_rpg_support/models/jogador.dart';
-import 'package:my_rpg_support/tiles/personagem_tile.dart';
+import 'package:my_rpg/data/colors_app.dart';
+import 'package:my_rpg/data/database.dart';
+import 'package:my_rpg/models/jogador.dart';
+import 'package:my_rpg/tiles/personagem_tile.dart';
 
 class TabEquipe extends StatefulWidget {
   final String _codeg;
-  TabEquipe(this._codeg);
+  final String _playerId;
+  TabEquipe(this._codeg, this._playerId);
   @override
-  _TabEquipeState createState() => _TabEquipeState(_codeg);
+  _TabEquipeState createState() => _TabEquipeState(_codeg, _playerId);
 }
 
 class _TabEquipeState extends State<TabEquipe> {
   final String _codeg;
-  _TabEquipeState(this._codeg);
+  final String _playerId;
+  Future<Map> _dataFutureGame;
+
+  _TabEquipeState(this._codeg, this._playerId);
 
   @override
   void initState(){
@@ -22,161 +27,75 @@ class _TabEquipeState extends State<TabEquipe> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+    _dataFutureGame = DataBase.getRoomData(_codeg, _playerId);
   }
-
-  //Personagens test e test2
-  Map test = {
-        "nome": "Luisz576",
-        "raca": "Elfo",
-        "classe": "Mago",
-        "lvl": 1,
-        "maxhp": 6,
-        "maxmp": 6,
-        "xp": 0,
-        "at": 2,
-        "def": 3,
-        "vel": 4,
-        "sort": 2,
-        "influencia": 1,
-        "hpatual": 6,
-        "mpatual":6,
-        "image": "https://yt3.ggpht.com/a/AATXAJzYiUqinCnhv1WhdG8Tvb3H3dOJW4n5B1hhmQ=s48-c-k-c0xffffffff-no-rj-mo",
-        "skills": [1, 0],
-        "inventory": {
-            "0": {
-              "id": 1,
-              "quantidade": 10
-            },
-            "1": {
-              "id": 0,
-              "quantidade": 0
-            },
-            "2": {
-              "id": 0,
-              "quantidade": 0
-            },
-            "3": {
-              "id": 0,
-              "quantidade": 0
-            },
-            "4": {
-              "id": 0,
-              "quantidade": 0
-            },
-            "5": {
-              "id": 0,
-              "quantidade": 0
-            },
-            "6": {
-              "id": 0,
-              "quantidade": 0
-            },
-            "7": {
-              "id": 0,
-              "quantidade": 0
-            },
-            "8": {
-              "id": 0,
-              "quantidade": 0
-            },
-            "9": {
-              "id": 0,
-              "quantidade": 0
-            },
-            "10": {
-              "id": 0,
-              "quantidade": 0
-            },
-            "11": {
-              "id": 0,
-              "quantidade": 0
-            },
-            "12": {
-              "id": 0,
-              "quantidade": 0
-            },
-            "13": {
-              "id": 0,
-              "quantidade": 0
-            },
-            "14": {
-              "id": 0,
-              "quantidade": 0
-            },
-            "15": {
-              "id": 0,
-              "quantidade": 0
-            },
-            "16": {
-              "id": 0,
-              "quantidade": 0
-            },
-            "17": {
-              "id": 0,
-              "quantidade": 0
-            },
-            "18": {
-              "id": 0,
-              "quantidade": 0
-            },
-            "19": {
-              "id": 0,
-              "quantidade": 0
-            },
-            "20": {
-              "id": 0,
-              "quantidade": 0
-            }
-        }
-    };
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-            color: ColorsApp.primaryColor,
-          ),
-        ),
-        Column(
-          children: <Widget>[
-            Expanded(
-              child: ListView(
-                children: <Widget>[
-                  PersonagemTile(Jogador.fromMap(test)),
-                ],
-              ),
+    return RefreshIndicator(
+      backgroundColor: ColorsApp.terciaryColor,
+      onRefresh: () async{
+        setState(() {
+          _dataFutureGame = DataBase.getRoomData(_codeg, _playerId);
+        });
+      },
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            child: FutureBuilder<Map>(
+              future: _dataFutureGame,
+              builder: (context, snapshot){
+
+                if(snapshot.connectionState == ConnectionState.waiting){
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }else if(snapshot.connectionState == ConnectionState.done){
+                  if(snapshot.data != null){
+                    if(snapshot.data['running'] != null ? snapshot.data['running'] : false)
+                      return ListView(
+                        children: _loadPlayers(snapshot.data['players']),
+                      );
+                  }else
+                    return Center(
+                      child: Column(
+                        children: <Widget>[
+                          Text("A sala não está acessivel!", style: TextStyle(color: ColorsApp.errorColor),),
+                          Text("Contate o admin da sala!", style: TextStyle(color: ColorsApp.errorColor)),
+                        ],
+                      ),
+                    );
+                }
+                return Center(
+                  child: Column(
+                    children: <Widget>[
+                      Text("Ocorreu um erro ao se conectar à sala!", style: TextStyle(color: ColorsApp.errorColor),),
+                      Text("Contate o admin da sala!", style: TextStyle(color: ColorsApp.errorColor),),
+                    ],
+                  ),
+                );
+                
+
+              },
             ),
-          ],
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
+
+  List<Widget> _loadPlayers(List<dynamic> dataPlayers){
+    List<Widget> w = new List<Widget>();
+    if(dataPlayers.length > 0){
+      dataPlayers.sort((a, b){
+        return (a['playerId'] == _playerId) ? 0 : (b['playerId'] == _playerId) ? 1 : -1;
+      });
+      dataPlayers.forEach((value) {
+        w.add(PersonagemTile(Jogador.fromMap(value)));
+      });
+    }else
+      w.add(Text("Não há players na sala!!", style: TextStyle(color: ColorsApp.secundaryWhiteColor),));
+    return w;
+  }
+
 }
-
-/*
-
-StreamBuilder<QuerySnapshot>(
-        stream: ,
-        builder: (context, snapshot){
-          switch(snapshot.connectionState){
-            case ConnectionState.none:
-            case ConnectionState.waiting:
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            default:
-              List<DocumentSnapshot> documents = snapshot.data.documents.reversed.toList();
-              return ListView.builder(
-                reverse: true,
-                itemCount: documents.length,
-                itemBuilder: (context, index){
-                  return PersonagemTile(Jogador.fromMap(documents[index].data));
-                }
-              );
-          }
-        },
-      ),
-
-*/

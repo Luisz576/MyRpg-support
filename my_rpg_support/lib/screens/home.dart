@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_rpg_support/tabs/tab_join.dart';
-import 'package:my_rpg_support/data/colors_app.dart';
+import 'package:my_rpg/tabs/tab_join.dart';
+import 'package:my_rpg/data/colors_app.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -10,7 +10,7 @@ class Home extends StatelessWidget {
         elevation: 0,
         backgroundColor: ColorsApp.primaryColor,
         title: Text(
-          "Join",
+          "MyRpg - Join",
           style: TextStyle(
             color: Colors.white,
             fontSize: 28.0,
@@ -18,7 +18,16 @@ class Home extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: TabJoin(),
+      body: Stack(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              color: ColorsApp.primaryColor,
+            ),
+          ),
+          TabJoin(),
+        ],
+      ),
     );
   }
 }

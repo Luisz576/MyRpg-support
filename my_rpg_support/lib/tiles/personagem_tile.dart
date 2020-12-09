@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_rpg_support/data/colors_app.dart';
-import 'package:my_rpg_support/models/jogador.dart';
+import 'package:my_rpg/data/colors_app.dart';
+import 'package:my_rpg/data/data_item.dart';
+import 'package:my_rpg/models/jogador.dart';
+import 'dart:math';
 
 class PersonagemTile extends StatefulWidget {
   final Jogador _player;
@@ -49,10 +51,17 @@ class _PersonagemTileState extends State<PersonagemTile> {
                     ),
                   ),
                   Text(
-                    "${_player.classe}",
+                    "${_player.classe} - ",
                     style: TextStyle(
                       color: lifeColor,
                       fontSize: 14.0,
+                    ),
+                  ),
+                  Text(
+                    "${_player.gold} gold",
+                    style: TextStyle(
+                      color: ColorsApp.pointOkColor,
+                      fontSize: 16.0,
                     ),
                   ),
                   Expanded(
@@ -134,7 +143,7 @@ class _PersonagemTileState extends State<PersonagemTile> {
               Expanded(
                 child: Align(
                   child: LinearProgressIndicator(
-                    value: (_player.xp / 100),
+                    value: (_player.xp / pow(_player.lvl, 2)),
                   ),
                   alignment: Alignment.bottomCenter,
                 ),
@@ -256,67 +265,45 @@ class _PersonagemTileState extends State<PersonagemTile> {
   }
 
   Widget _buildPreviewItem(int index){
-    return SizedBox(
-      width: 60.0,
-      height: 60.0,
-      child: Stack(
-        children: <Widget>[
-          Image.asset(_player.getItem(index).image, fit: BoxFit.fill,),
-          (_player.getItem(index).quantidade > 0) ? 
-          Align(
-            alignment: Alignment.topRight,
-            child: CircleAvatar(
-              backgroundColor: lifeColor,
-              radius: 12.0,
-              child: Text(
-                '${_player.getItem(index).quantidade}',
-                style: TextStyle(
-                  fontSize: 12.0,
+    return GestureDetector(
+      onTap: (){
+        if(_player.getItem(index).quantidade > 0){
+          DataItem.infoItem(_player.getItem(index), context, lifeColor: lifeColor);
+        }
+      },
+      child: SizedBox(
+        width: 60.0,
+        height: 60.0,
+        child: Stack(
+          children: <Widget>[
+            Stack(
+              children: <Widget>[
+                Image.asset(DataItem.getSlotEmpty().image, fit: BoxFit.fill,),
+                Align(
+                  alignment: Alignment.center,
+                  child: Image.asset(_player.getItem(index).image, fit: BoxFit.fill,),
+                ),
+              ],
+            ),
+            (_player.getItem(index).quantidade > 0) ? 
+            Align(
+              alignment: Alignment.topRight,
+              child: CircleAvatar(
+                backgroundColor: lifeColor,
+                radius: 12.0,
+                child: Text(
+                  '${_player.getItem(index).quantidade}',
+                  style: TextStyle(
+                    fontSize: 12.0,
+                  ),
                 ),
               ),
-            ),
-          ) :
-          Container(),
-        ],
+            ) :
+            Container(),
+          ],
+        ),
       ),
     );
   }
-
-  /*
-  
-
-    FutureBuilder<QuerySnapshot>(
-      future: Firestore.instance.collection('home').orderBy('pos').getDocuments(),
-      builder: (context, snapshot){
-        if(!snapshot.hasData){
-          return SliverToBoxAdapter(
-            child: Container(
-              height: 200.0,
-              child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.white),),
-              alignment: Alignment.center,
-            ),
-          );
-        }else{
-          return SliverStaggeredGrid.count(
-            crossAxisCount: 2, //Grade
-            mainAxisSpacing: 0.0,
-            crossAxisSpacing: 0.0,
-            staggeredTiles: snapshot.data.documents.map((doc){
-              return StaggeredTile.count(doc.data['x'], doc.data['y']);
-            }).toList(),
-            children: snapshot.data.documents.map((doc){
-              return FadeInImage.memoryNetwork(
-                placeholder: kTranparentImage.kTransparentImage,
-                image: doc.data['image'],
-                fit: BoxFit.cover,
-              );
-            }).toList(),
-          );
-        }
-      }
-    ),
-  
-  
-  */
 
 }

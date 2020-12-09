@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:my_rpg_support/data/colors_app.dart';
+import 'package:my_rpg/data/colors_app.dart';
 
 class FloatButtomDados extends StatelessWidget {
   @override
@@ -11,7 +11,7 @@ class FloatButtomDados extends StatelessWidget {
       onPressed: (){
         _bottomOpem(context);
       },
-      child: Icon(Icons.assignment, color: ColorsApp.primaryWhiteColor,),
+      child: Image.asset("images/dados/dados.png"),
     );
   }
 
@@ -52,46 +52,34 @@ class FloatButtomDados extends StatelessWidget {
           color: ColorsApp.terciaryColor,
           child: Wrap(
             children: <Widget>[
-              ListTile(
-                leading: Icon(Icons.data_usage, color: ColorsApp.primaryWhiteColor,),
-                title: Text(
-                  '6 lados',
-                  style: TextStyle(
-                    color: ColorsApp.primaryWhiteColor,
-                  ),
-                ),
-                onTap: () {
-                  _jogarDado(6, context);
-                }          
-              ),
-              ListTile(
-                leading: Icon(Icons.data_usage, color: ColorsApp.primaryWhiteColor,),
-                title: Text(
-                  '12 lados',
-                  style: TextStyle(
-                    color: ColorsApp.primaryWhiteColor,
-                  ),
-                ),
-                onTap: () {
-                  _jogarDado(12, context);
-                },          
-              ),
-              ListTile(
-                leading: Icon(Icons.data_usage, color: ColorsApp.primaryWhiteColor,),
-                title: Text(
-                  '100 lados',
-                  style: TextStyle(
-                    color: ColorsApp.primaryWhiteColor,
-                  ),
-                ),
-                onTap: () {
-                  _jogarDado(100, context);
-                },
-              ),
+              _buildDado(4, "images/dados/4.png", context),
+              _buildDado(6, "images/dados/6.png", context),
+              _buildDado(8, "images/dados/8.png", context),
+              _buildDado(12, "images/dados/12.png", context),
+              _buildDado(20, "images/dados/20.png", context),
             ],
           ),
         );
       }
+    );
+  }
+
+  Widget _buildDado(int lados, String image, context){
+    return ListTile(
+      leading: SizedBox(
+        child: Image.asset(image, fit: BoxFit.fill,), 
+        width: 50.0,
+        height: 50.0,
+      ),
+      title: Text(
+        '$lados lados',
+        style: TextStyle(
+          color: ColorsApp.primaryWhiteColor,
+        ),
+      ),
+      onTap: () {
+        _jogarDado(lados, context);
+      }          
     );
   }
 
