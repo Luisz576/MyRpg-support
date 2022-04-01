@@ -1,0 +1,15 @@
+myrpg_support/.dart_tool
+myrpg_support/.idea
+myrpg_support/android
+myrpg_support/ios
+myrpg_support/images
+myrpg_support/web
+myrpg_support/test
+myrpg_support/windows
+myrpg_support/.metadata
+myrpg_support/.gitignore
+myrpg_support/.packages
+myrpg_support/analysis_options.yaml
+myrpg_support/.myrpg_support
+myrpg_support/pubspec.lock
+myrpg_support/README.md
