@@ -13,3 +13,7 @@ myrpg_support/analysis_options.yaml
 myrpg_support/.myrpg_support
 myrpg_support/pubspec.lock
 myrpg_support/README.md
+
+myrpg_server/configs.json
+myrpg_server/node_modules
+myrpg_server/package-lock.json
