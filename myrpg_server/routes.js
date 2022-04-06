@@ -7,7 +7,7 @@ const routes = express.Router()
 
 routes.get('/hasroom', RoomController.index)
 routes.post('/newroom', RoomController.store)
-routes.delete('/destroyroom', RoomController.destroy)
+routes.delete('/destroyroom/:room_id', RoomController.destroy)
 
 routes.get('/players', PlayerController.index)
 routes.get('/player/:player_id', PlayerController.show)

@@ -32,16 +32,17 @@ module.exports = {
     },
     async destroy(req, res){
         const result = {}
-        const { room } = req.body
-        result.status = -1
-        if(room){
+        const { room_id } = req.params
+        if(room_id){
             result.target = room
             result.status = 404
-            let newRoom = await Room.findOne({room})
+            let newRoom = await Room.findOne({room: room_id})
             if(newRoom){
                 result.status = 200
-                await Room.deleteOne({room})
+                await Room.deleteOne({room: room_id})
             }
+        }else{
+            return res.status(400).json({ error: "RoomID wasn't passed" })
         }
         return res.json(result)
     }

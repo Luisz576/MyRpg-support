@@ -6,10 +6,20 @@ class Api{
 
   static Future<Connection?> connectToRoom(String roomCode) async{
     Connection connection = Connection(roomCode);
-    final response = await connection.get("/hasroom", {"room": roomCode});
+    final response = await connection.get("/hasroom");
     print(response);
-    if(false)
+    if(false){
       return connection;
+    }
+    return null;
+  }
+
+  static Future<Map<String, dynamic>?> getRoomData(Connection connection) async{
+    final responsePlayers = await connection.get("/players");
+    print(responsePlayers);
+    if(false){
+      return {};
+    }
     return null;
   }
 
