@@ -5,7 +5,7 @@ class Character{
 
   String nome = "", raca = "", classe = "", image = "";
   int lvl = 0, gold = 0, maxhp = 0, maxmp = 0, at = 0, def = 0, vel = 0, sort = 0, influencia = 0, hpatual = 0, mpatual = 0, xp = 0;
-  List<dynamic> skills = List.empty();
+  List<dynamic> skills = List.empty(growable: true);
   Map inventory = {};
 
   Item? getItem(int index){
@@ -61,14 +61,14 @@ class Character{
 
   //TODO: SKILLS
   static String getSkillImageNull(){
-    return getSkillImage(0);
+    return getSkillImage(0)!;
   }
-  static String getSkillImage(int id){
-    Map skills = {
-      "0":"images/item/slot.png",
-      "1":"images/item/slot.png",
-    };
-    return skills['$id'];
+  static const Map skillsData = {
+    "0":"images/item/slot.png",
+    "1":"images/item/slot.png",
+  };
+  static String? getSkillImage(int id){
+    return skillsData['$id'];
   }
 
 }
