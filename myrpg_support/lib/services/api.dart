@@ -26,9 +26,7 @@ class Api{
     if(_connection != null){
       final responsePlayers = await _connection!.get("/players");
       print(responsePlayers);
-      if(false){
-        return {};
-      }
+      return {};
     }
     return null;
   }
