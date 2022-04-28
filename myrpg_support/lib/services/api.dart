@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:myrpg_support/models/connection.dart';
 
 class Api{
@@ -6,29 +8,37 @@ class Api{
   static String _room = "";
   static Connection? _connection;
 
-  static Future<bool> connectToRoom(String roomCode) async{
+  static Future<bool> connectToRoom(String roomCode, Function callback) async{
+    disconnect();
     _room = roomCode;
     Connection connection = Connection(roomCode);
-    return true;
-    final response = await connection.get("/hasroom");
-    print(response);
-    if(false){
-      return true;
+    final response = await connection.get("/hasroom", args: {});
+    if(response.statusCode == 200){
+      final data = jsonDecode(response.body);
+      if(data["status"] == 200){
+        connection.open(callback);
+        return true;
+      }
     }
     return false;
   }
 
-  static String getRoomCode(){
-    return _room;
+  static bool isConnected(){
+    if(_connection != null){
+      return _connection!.isConnected();
+    }
+    return false;
   }
 
-  static Future<Map<String, dynamic>?> getRoomData() async{
+  static void disconnect(){
     if(_connection != null){
-      final responsePlayers = await _connection!.get("/players");
-      print(responsePlayers);
-      return {};
+      _connection!.close();
     }
-    return null;
+    _connection = null;
+  }
+
+  static String getRoomCode(){
+    return _room;
   }
 
 }

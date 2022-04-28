@@ -20,6 +20,15 @@ class _HomeScreenState extends State<HomeScreen> {
   _emptyCamp = false,
   _isLoading = false;
 
+  _onConnect(){
+    setState(() {
+      _isLoading = false;
+    });
+    Navigator.pushAndRemoveUntil(context,
+    MaterialPageRoute(builder: (context) => const GameScreen()),
+    (route) => false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GameScaffold(
@@ -31,23 +40,17 @@ class _HomeScreenState extends State<HomeScreen> {
             InputCamp(_codeController, hintText: "Room Code"),
             const SizedBox(height: 20.0,),
             GreenButton("Entrar", onPressed: () async{
-              if(_codeController.text.isNotEmpty){
+              if(!_isLoading && _codeController.text.isNotEmpty){
                 setState(() {
                   _emptyCamp = false;
                   _isLoading = true;
                 });
-                if(await Api.connectToRoom(_codeController.text)){
-                  Navigator.pushAndRemoveUntil(context,
-                  MaterialPageRoute(builder: (context) => const GameScreen()),
-                  (route) => false);
-                }else{
+                if(!(await Api.connectToRoom(_codeController.text, _onConnect))){
                   setState(() {
                     _errorToConnectWithRoom = true;
+                    _isLoading = false;
                   });
                 }
-                setState(() {
-                  _isLoading = false;
-                });
               }else{
                 setState(() {
                   _emptyCamp = true;

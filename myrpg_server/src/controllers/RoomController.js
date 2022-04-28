@@ -1,4 +1,6 @@
+const Player = require('../models/Player')
 const Room = require('../models/Room')
+const { sendAUpdateToClients } = require('../websocket')
 
 module.exports = {
     async index(req, res){
@@ -34,12 +36,16 @@ module.exports = {
         const result = {}
         const { room_id } = req.params
         if(room_id){
-            result.target = room
+            result.target = room_id
             result.status = 404
             let newRoom = await Room.findOne({room: room_id})
             if(newRoom){
                 result.status = 200
+                const players = await Player.find({room: newRoom._id})
+                for(let i in players)
+                    Player.findByIdAndDelete(players[i]._id)
                 await Room.deleteOne({room: room_id})
+                sendAUpdateToClients(room_id)
             }
         }else{
             return res.status(400).json({ error: "RoomID wasn't passed" })

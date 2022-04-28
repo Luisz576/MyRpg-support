@@ -1,4 +1,5 @@
 const express = require('express')
+const { startWebSocket } = require('./websocket');
 
 const RoomController = require('./controllers/RoomController')
 const PlayerController = require('./controllers/PlayerController')
@@ -14,5 +15,7 @@ routes.get('/player/:player_id', PlayerController.show)
 routes.post('/player/:player_id', PlayerController.update)
 routes.post('/player', PlayerController.store)
 routes.delete('/destroyplayer/:player_id', PlayerController.destroy)
+
+startWebSocket();
 
 module.exports = routes

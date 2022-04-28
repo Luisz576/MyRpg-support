@@ -1,5 +1,6 @@
 const Room = require('../models/Room')
 const Player = require('../models/Player')
+const { sendAUpdateToClients } = require('../websocket')
 
 module.exports = {
     async index(req, res){
@@ -36,6 +37,7 @@ module.exports = {
         result.status = 200
         const newPlayer = await Player.create({ room: roomGetted, nome, raca, classe, lvl, gold, maxhp, maxmp, xp, at, def, vel, sort, influencia, hpatual, mpatual, image })
         result.player = newPlayer
+        sendAUpdateToClients(room)
         return res.json(result)
     },
     async update(req, res){
@@ -46,7 +48,7 @@ module.exports = {
         if(!all_params_were_passed) return res.status(400).json({ error: "Some param wasn't passed" })
         try {
             const player = await Player.findById(player_id)
-            if(!player) res.status(400).json({ error: "Player not founded" })
+            if(!player) return res.status(400).json({ error: "Player not founded" })
             player.nome = nome
             player.raca = raca
             player.classe = classe
@@ -65,6 +67,8 @@ module.exports = {
             player.image = image
             await player.save()
             result.status = 200
+            const gettedRoom = await Room.findById(player.room);
+            sendAUpdateToClients(gettedRoom.room)
         } catch (e) {
             return res.status(400).json({ error: "Player not founded" })
         }
@@ -79,6 +83,8 @@ module.exports = {
             if(!player) return res.status(400).json({ error: "No player founded" })
             result.status = 200
             await Player.deleteOne({_id: player_id})
+            const gettedRoom = await Room.findById(player.room);
+            sendAUpdateToClients(gettedRoom.room)
         }catch(e){
             return res.status(400).json({ error: "No player founded" })
         }
