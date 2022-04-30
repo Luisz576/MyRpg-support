@@ -2,7 +2,6 @@ const { io } = require('./http')
 
 const noRoom = []
 const withRoom = {}
-
 function startWebSocket(){
     function removeFromNoRoom(id){
         const index = noRoom.indexOf(id);
@@ -35,6 +34,8 @@ function startWebSocket(){
         }, 2000)
         socket.on("select_room", data => {
             console.log(data)
+            //TODO: VERIFICAR SE O ROOM EXISTE
+            //TODO: SE EXISTE ARMAZENA NA VARIAVEL "withRoom"
         })
     })
     io.on("disconnection", socket => {
@@ -44,7 +45,13 @@ function startWebSocket(){
 }
 
 function sendAUpdateToClients(room){
-    console.log(room);
+    function getDataToSend(room){
+        const data = {}
+        console.log(room)
+        return data
+    }
+    const data = getDataToSend(room)
+    //TODO: EMITIR UM UPDATE PARA TODOS OS CLIENTS CONECTADOS À AQUELE ROOM
     // io.emit("update_data", )
 }
 

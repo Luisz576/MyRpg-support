@@ -8,19 +8,23 @@ class Api{
   static String _room = "";
   static Connection? _connection;
 
-  static Future<bool> connectToRoom(String roomCode, Function callback) async{
+  static Future<bool> connectToRoom(String roomCode, Function callback, Function failCallback) async{
     disconnect();
     _room = roomCode;
     Connection connection = Connection(roomCode);
-    final response = await connection.get("/hasroom", args: {});
-    if(response.statusCode == 200){
-      final data = jsonDecode(response.body);
-      if(data["status"] == 200){
-        connection.open(callback);
-        return true;
+    final response = connection.get("/hasroom", args: {});
+    bool hasConnected = false;
+    response.then((response){
+      if(response.statusCode == 200){
+        final data = jsonDecode(response.body);
+        if(data["status"] == 200){
+          connection.open(callback, failCallback);
+          hasConnected = true;
+        }
       }
-    }
-    return false;
+    });
+    await Future.delayed(const Duration(seconds: 5));
+    return hasConnected;
   }
 
   static bool isConnected(){
@@ -35,6 +39,14 @@ class Api{
       _connection!.close();
     }
     _connection = null;
+  }
+
+  static bool addDataListenerIfThereIsAConnection(Function listener){
+    if(isConnected()){
+      _connection!.addDataReciveListener(listener);
+      return true;
+    }
+    return false;
   }
 
   static String getRoomCode(){

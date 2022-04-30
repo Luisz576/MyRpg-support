@@ -6,6 +6,6 @@ class MissionsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text("Missions Tab", style: TextStyle(color: ColorsApp.primaryWhiteColor));
+    return const Text("Missions Tab", style: TextStyle(color: ColorsApp.primaryWhiteColor));
   }
 }

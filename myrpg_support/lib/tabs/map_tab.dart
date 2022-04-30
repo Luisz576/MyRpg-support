@@ -6,6 +6,6 @@ class MapTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text("Map Tab", style: TextStyle(color: ColorsApp.primaryWhiteColor));
+    return const Text("Map Tab", style: TextStyle(color: ColorsApp.primaryWhiteColor));
   }
 }

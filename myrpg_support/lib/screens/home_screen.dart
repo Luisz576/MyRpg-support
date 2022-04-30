@@ -18,7 +18,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool _errorToConnectWithRoom = false,
   _emptyCamp = false,
-  _isLoading = false;
+  _isLoading = false,
+  _failToConnect = false;
 
   _onConnect(){
     setState(() {
@@ -27,6 +28,13 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.pushAndRemoveUntil(context,
     MaterialPageRoute(builder: (context) => const GameScreen()),
     (route) => false);
+  }
+
+  _onFailConnect(){
+    setState(() {
+      _isLoading = false;
+      _failToConnect = true;
+    });
   }
 
   @override
@@ -42,10 +50,12 @@ class _HomeScreenState extends State<HomeScreen> {
             GreenButton("Entrar", onPressed: () async{
               if(!_isLoading && _codeController.text.isNotEmpty){
                 setState(() {
+                  _failToConnect = false;
+                  _errorToConnectWithRoom = false;
                   _emptyCamp = false;
                   _isLoading = true;
                 });
-                if(!(await Api.connectToRoom(_codeController.text, _onConnect))){
+                if(!(await Api.connectToRoom(_codeController.text, _onConnect, _onFailConnect))){
                   setState(() {
                     _errorToConnectWithRoom = true;
                     _isLoading = false;
@@ -68,6 +78,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ) :
             _errorToConnectWithRoom ? const Text("Sala não encontrada!",
+              style: TextStyle(
+                color: ColorsApp.errorColor
+              ),
+            ) : _failToConnect ? const Text("Não foi possível se conectar à sala!",
               style: TextStyle(
                 color: ColorsApp.errorColor
               ),

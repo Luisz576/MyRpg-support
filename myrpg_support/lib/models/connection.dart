@@ -1,27 +1,51 @@
 import 'package:myrpg_support/services/api.dart';
 import 'package:http/http.dart' as http;
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart' as socketio;
 
 class Connection{
 
   final String _roomCode;
-  IO.Socket? _socket;
+  socketio.Socket? _socket;
   final List<Function> _listeners = [];
+  Function? _failConnection;
 
   Connection(this._roomCode);
 
   //WebSocket functions
-  open(Function callback){
+  open(Function callback, Function failCallback){
     if(isOpened()){
       throw "The connected is already opened!";
     }
-    _socket = IO.io(Api.urlBase);
+    _failConnection = failCallback;
+    // _socket = socketio.io(Api.urlBase, <String, dynamic>{
+    //     'transports': ['websocket'],
+    //     'autoConnect': true,
+    // });
+    //TODO: TESTAR ESSE NOVO MODO, SE NÃO FOR VOLTAR AO ANTIGO
+    _socket = socketio.io(Api.urlBase, socketio.OptionBuilder()
+      .setTransports(['websocket']) // for Flutter or Dart VM
+      .setExtraHeaders({'foo': 'bar'}) // optional
+      .build());
+    _socket!.connect();
     _socket!.on("connect", (_){
+      print("Connected");
+      _failConnection = null;
       _socket!.emit("select_room", _roomCode);
       callback();
     });
     _socket!.on("disconnect", _onDisconnect);
     _socket!.on("update_data", _onReciveData);
+    Future.delayed(const Duration(seconds: 5), () {
+      _failToConnect();
+    });
+  }
+  
+  _failToConnect(){
+    if(_failConnection != null){
+      close();
+      _failConnection!();
+    }
+    _failConnection = null;
   }
 
   bool isOpened(){ return _socket != null; }
@@ -37,6 +61,7 @@ class Connection{
     if(isOpened()){
       _socket!.disconnect();
     }
+    _listeners.clear();
     _socket = null;
   }
 
@@ -56,10 +81,11 @@ class Connection{
   void _onDisconnect(_data){
     close();
     _onReciveData(null);
+    _failToConnect();
   }
 
   //HTTP functions
-  Future<http.Response> get(String path, {Map<String, String>? args}) async{
+  Future<http.Response> get(String path, {Map<String, String>? args}){
     String url = Api.urlBase + path;
     String query = "?";
     if(args != null){
@@ -74,7 +100,7 @@ class Connection{
         }
       }
     }
-    return await http.get(Uri.parse(url + query));
+    return http.get(Uri.parse(url + query));
   }
 
   Future<http.Response> post(String path, {Map<String, String>? args}) async{
