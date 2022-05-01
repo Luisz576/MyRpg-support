@@ -1,6 +1,5 @@
 const { port, link_mongodb } = require('./configs.json')
 const { app, serverHttp } = require('./src/http')
-const express = require('express')
 const mongoose = require('mongoose')
 const routes = require('./src/routes')
 const { startWebSocket } = require('./src/websocket');

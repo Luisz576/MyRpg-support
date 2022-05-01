@@ -4,7 +4,7 @@ import 'package:myrpg_support/models/connection.dart';
 
 class Api{
 
-  static const urlBase = "http://192.168.56.1:3030";
+  static const urlBase = "http://192.168.56.1:5050";
   static String _room = "";
   static Connection? _connection;
 

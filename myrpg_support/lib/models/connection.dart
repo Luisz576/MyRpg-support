@@ -21,12 +21,19 @@ class Connection{
     //     'transports': ['websocket'],
     //     'autoConnect': true,
     // });
-    //TODO: TESTAR ESSE NOVO MODO, SE NÃO FOR VOLTAR AO ANTIGO
+    //TODO: CONCERTAR
     _socket = socketio.io(Api.urlBase, socketio.OptionBuilder()
-      .setTransports(['websocket']) // for Flutter or Dart VM
+      .setTransports(['websocket'])
+      .disableAutoConnect() // for Flutter or Dart VM
       .setExtraHeaders({'foo': 'bar'}) // optional
       .build());
     _socket!.connect();
+    _socket!.onConnect((data){
+      print("onConnected");
+      _failConnection = null;
+      _socket!.emit("select_room", _roomCode);
+      callback();
+    });
     _socket!.on("connect", (_){
       print("Connected");
       _failConnection = null;

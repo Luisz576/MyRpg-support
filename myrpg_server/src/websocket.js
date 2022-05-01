@@ -1,4 +1,5 @@
 const { io } = require('./http')
+const Room = require('./models/Room')
 
 const noRoom = []
 const withRoom = {}
@@ -32,10 +33,14 @@ function startWebSocket(){
             if(!isInSomeRoom(socket.id))
                 socket.disconnect()
         }, 2000)
-        socket.on("select_room", data => {
-            console.log(data)
-            //TODO: VERIFICAR SE O ROOM EXISTE
-            //TODO: SE EXISTE ARMAZENA NA VARIAVEL "withRoom"
+        socket.on("select_room", async (data) => {
+            if(typeof data == "number")
+                if(await Room.findOne({room: data})){
+                    if(withRoom[data]){
+                        withRoom[data].push(socket.id)
+                    }else
+                        withRoom[data] = [socket.id]
+                }
         })
     })
     io.on("disconnection", socket => {
@@ -47,12 +52,17 @@ function startWebSocket(){
 function sendAUpdateToClients(room){
     function getDataToSend(room){
         const data = {}
-        console.log(room)
+        //TODO: GET ALL DATA
+        data["players"] = []
+        data["missions"] = []
+        data["map"] = ""
         return data
     }
     const data = getDataToSend(room)
-    //TODO: EMITIR UM UPDATE PARA TODOS OS CLIENTS CONECTADOS À AQUELE ROOM
-    // io.emit("update_data", )
+    if(withRoom[room]){
+        for(index in withRoom[room])
+            io.to(withRoom[room][index]).emit("update_data", data)
+    }
 }
 
 module.exports = { startWebSocket, sendAUpdateToClients }
