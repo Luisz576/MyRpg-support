@@ -1,6 +1,5 @@
 const Room = require('../models/Room')
 const Player = require('../models/Player')
-const { sendAUpdateToClients } = require('../websocket')
 
 module.exports = {
     async index(req, res){
@@ -19,7 +18,7 @@ module.exports = {
         const { player_id } = req.params
         try{
             const player = await Player.findById(player_id)
-            if(!player) res.status(400).json({ error: "No player founded" })
+            if(!player) return res.status(400).json({ error: "No player founded" })
             result.player = player
             result.status = 200
         }catch(e){
@@ -35,16 +34,15 @@ module.exports = {
         const roomGetted = await Room.findOne({room})
         if(!roomGetted) return res.status(400).json({ error: "Room not founded" })
         result.status = 200
-        const newPlayer = await Player.create({ room: roomGetted, nome, raca, classe, lvl, gold, maxhp, maxmp, xp, at, def, vel, sort, influencia, hpatual, mpatual, image })
+        const newPlayer = await Player.create({ room: roomGetted, nome, raca, classe, lvl, gold, maxhp, maxmp, xp, at, def, vel, sort, influencia, hpatual, mpatual, image, inventory: "{\"0\": {\"id\": 0,\"quantidade\": 0}}", skills: [0, 0] })
         result.player = newPlayer
-        sendAUpdateToClients(room)
         return res.json(result)
     },
     async update(req, res){
         const result = {}
         const { player_id } = req.params
-        const { nome, raca, classe, lvl, gold, maxhp, maxmp, xp, at, def, vel, sort, influencia, hpatual, mpatual, image } = req.body
-        all_params_were_passed = nome && raca && classe && lvl && gold && maxhp && maxmp && xp && at && def && vel && sort && influencia && hpatual && mpatual && image
+        const { nome, raca, classe, lvl, gold, maxhp, maxmp, xp, at, def, vel, sort, influencia, hpatual, mpatual, image, inventory, skills } = req.body
+        all_params_were_passed = nome && raca && classe && lvl && gold && maxhp && maxmp && xp && at && def && vel && sort && influencia && hpatual && mpatual && image && inventory && skills
         if(!all_params_were_passed) return res.status(400).json({ error: "Some param wasn't passed" })
         try {
             const player = await Player.findById(player_id)
@@ -65,12 +63,12 @@ module.exports = {
             player.hpatual = hpatual
             player.mpatual = mpatual
             player.image = image
+            player.inventory = inventory
+            player.skills = skills
             await player.save()
             result.status = 200
-            const gettedRoom = await Room.findById(player.room);
-            sendAUpdateToClients(gettedRoom.room)
         } catch (e) {
-            return res.status(400).json({ error: "Player not founded" })
+            return res.status(400).json({ error: "Error while updating player..." })
         }
         return res.json(result)
     },
@@ -83,10 +81,8 @@ module.exports = {
             if(!player) return res.status(400).json({ error: "No player founded" })
             result.status = 200
             await Player.deleteOne({_id: player_id})
-            const gettedRoom = await Room.findById(player.room);
-            sendAUpdateToClients(gettedRoom.room)
         }catch(e){
-            return res.status(400).json({ error: "No player founded" })
+            return res.status(400).json({ error: "Error while deleting player..." })
         }
         return res.json(result)
     }

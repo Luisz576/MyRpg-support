@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:myrpg_support/models/item.dart';
 import 'package:myrpg_support/widgets/data_item.dart';
 
@@ -5,7 +7,7 @@ class Character{
 
   String nome = "", raca = "", classe = "", image = "";
   int lvl = 0, gold = 0, maxhp = 0, maxmp = 0, at = 0, def = 0, vel = 0, sort = 0, influencia = 0, hpatual = 0, mpatual = 0, xp = 0;
-  List<dynamic> skills = List.empty(growable: true);
+  List<dynamic> skills = [0, 0];
   Map inventory = {};
 
   Item? getItem(int index){
@@ -33,7 +35,7 @@ class Character{
     mpatual = map['mpatual'];
     image = map['image'];
     skills = map['skills'];
-    inventory = map['inventory'];
+    inventory = jsonDecode(map['inventory']);
   }
 
   Map toMap(){
@@ -55,7 +57,7 @@ class Character{
       'mpatual': mpatual,
       'image': image,
       'skills': skills,
-      'inventory': inventory,
+      'inventory': jsonEncode(inventory),
     };
   }
 

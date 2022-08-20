@@ -55,12 +55,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   _emptyCamp = false;
                   _isLoading = true;
                 });
-                if(!(await Api.connectToRoom(_codeController.text, _onConnect, _onFailConnect))){
+                Api.connectToRoom(_codeController.text, _onConnect, _onFailConnect, (){
                   setState(() {
                     _errorToConnectWithRoom = true;
                     _isLoading = false;
                   });
-                }
+                });
               }else{
                 setState(() {
                   _emptyCamp = true;

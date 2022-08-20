@@ -5,7 +5,6 @@ const MissionSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Room'
     },
-    id: Number,
     title: String,
     descricao: String,
     recompensaType: Number,

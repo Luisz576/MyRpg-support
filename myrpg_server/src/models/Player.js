@@ -20,7 +20,9 @@ const PlayerSchema = new mongoose.Schema({
     influencia: Number,
     hpatual: Number,
     mpatual: Number,
-    image: String
+    image: String,
+    inventory: String,
+    skills: [Number],
 })
 
 module.exports = mongoose.model('Player', PlayerSchema)

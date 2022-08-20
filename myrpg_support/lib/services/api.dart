@@ -1,56 +1,66 @@
 import 'dart:convert';
 
 import 'package:myrpg_support/models/connection.dart';
+import 'package:myrpg_support/models/room_data.dart';
 
 class Api{
 
-  static const urlBase = "http://192.168.56.1:5050";
-  static String _room = "";
+  static const urlBase = "http://192.168.0.105:5050";
   static Connection? _connection;
 
-  static Future<bool> connectToRoom(String roomCode, Function callback, Function failCallback) async{
-    disconnect();
-    _room = roomCode;
-    Connection connection = Connection(roomCode);
-    final response = connection.get("/hasroom", args: {});
-    bool hasConnected = false;
-    response.then((response){
+  static void connectToRoom(String roomCode, Function callback, Function failCallback, Function noConnectionCallback) async{
+    _connection = Connection(roomCode);
+    try{
+      final response = await _connection!.get("/hasroom", args: {});
       if(response.statusCode == 200){
         final data = jsonDecode(response.body);
         if(data["status"] == 200){
-          connection.open(callback, failCallback);
-          hasConnected = true;
+          callback();
+        }else{
+          _connection = null;
+          failCallback();
         }
+      }else{
+        _connection = null;
+        noConnectionCallback();
       }
-    });
-    await Future.delayed(const Duration(seconds: 5));
-    return hasConnected;
+    }catch(e){
+      noConnectionCallback();
+      return;
+    }
+  }
+
+  static Future<RoomData?> getRoomData() async{
+    if(isConnected()){
+      try{
+        final responsePlayers = await _connection!.get("/players", args: {});
+        final responseMissions = await _connection!.get("/missions", args: {});
+        if(responsePlayers.statusCode == 200 && responseMissions.statusCode == 200){
+          final playersData = jsonDecode(responsePlayers.body);
+          final missionsData = jsonDecode(responseMissions.body);
+          if(playersData["status"] == 200 && missionsData["status"] == 200){
+            return RoomData.fromMap(playersData, missionsData);
+          }else{
+            throw "No data was taken";
+          }
+      }else{
+        throw "Connection error";
+      }
+      // ignore: empty_catches
+      }catch(e){}
+    }
+    return null;
   }
 
   static bool isConnected(){
-    if(_connection != null){
-      return _connection!.isConnected();
-    }
-    return false;
-  }
-
-  static void disconnect(){
-    if(_connection != null){
-      _connection!.close();
-    }
-    _connection = null;
-  }
-
-  static bool addDataListenerIfThereIsAConnection(Function listener){
-    if(isConnected()){
-      _connection!.addDataReciveListener(listener);
-      return true;
-    }
-    return false;
+    return _connection != null;
   }
 
   static String getRoomCode(){
-    return _room;
+    if(_connection != null){
+      return _connection!.getRoomCode();
+    }
+    return "";
   }
 
 }
