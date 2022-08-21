@@ -64,6 +64,7 @@ flutter:
     - images/dados/
     - images/skills/
     - images/missions/
+    - images/map/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

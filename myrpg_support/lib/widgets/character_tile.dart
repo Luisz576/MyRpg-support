@@ -24,9 +24,7 @@ class _CharacterTileState extends State<CharacterTile> {
       child: Card(
       elevation: 4.0,
       child: InkWell(
-        onTap: (){
-
-        },
+        onTap: (){},
         child: Container(
           height: 270.0,
           child: Column(

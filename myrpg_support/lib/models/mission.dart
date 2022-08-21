@@ -6,7 +6,6 @@ class Mission{
   String? title, descricao;
   int? id, recompensaType, recompensa, quantItemRecive;
   bool? principal, completed, fail;
-  List<dynamic>? objs;
 
   Item? getItem(){
     if(recompensaType == 1){
@@ -25,8 +24,7 @@ class Mission{
   Mission.fromMap(Map map){
     id = map['id'];
     title = map["title"];
-    descricao = map["content"];
-    objs = map["objetivos"];
+    descricao = map["descricao"];
     recompensaType = map["recompensaType"];
     recompensa = map["recompensa"];
     principal = map["principal"];
@@ -40,7 +38,6 @@ class Mission{
       "id": id,
       "title": title,
       "content": descricao,
-      "objetivos": objs,
       "recompensaType": recompensaType,
       "recompensa": recompensa,
       "principal": principal,

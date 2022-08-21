@@ -1,7 +1,7 @@
 import 'dart:convert';
 
+import 'package:myrpg_support/data/triple.dart';
 import 'package:myrpg_support/models/connection.dart';
-import 'package:myrpg_support/models/room_data.dart';
 
 class Api{
 
@@ -30,7 +30,7 @@ class Api{
     }
   }
 
-  static Future<RoomData?> getRoomData() async{
+  static Future<Triple<Map, Map, String>?> getRoomData() async{
     if(isConnected()){
       try{
         final responsePlayers = await _connection!.get("/players", args: {});
@@ -39,7 +39,8 @@ class Api{
           final playersData = jsonDecode(responsePlayers.body);
           final missionsData = jsonDecode(responseMissions.body);
           if(playersData["status"] == 200 && missionsData["status"] == 200){
-            return RoomData.fromMap(playersData, missionsData);
+            // COMO SÓ TEM UM MAPA, NÃO IMPLEMENTEI NADA PARA MAPA
+            return Triple(playersData, missionsData, "Sem mapa");
           }else{
             throw "No data was taken";
           }
